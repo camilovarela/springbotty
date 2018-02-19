@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using Microsoft.Bot.Connector;
+using SimpleEchoBot.Constants;
 using SimpleEchoBot.Services;
 
 /**
@@ -53,25 +54,24 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
                     }
                     else
                     {
-                        message = "Did you upload an audio file? I'm more of an audible person. Try sending me a wav file";
+                        message = SpringBottyConstants.NOT_AUDIBLE_FILE;
                     }
                 }
                 catch (Exception e)
                 {
-                    message = "Oops! Something went wrong. Try again later";
+                    message = SpringBottyConstants.AUDIBLE_FILE_ERROR;
                     if (e is HttpException)
                     {
                         var httpCode = (e as HttpException).GetHttpCode();
                         if (httpCode == 401 || httpCode == 403)
                         {
-                            message += $" [{e.Message} - hint: check your API KEY at web.config]";
+                            message += $" [{e.Message} - tip: Revisa el API KEY de tu proyecto]";
                         }
                         else if (httpCode == 408)
                         {
-                            message += $" [{e.Message} - hint: try send an audio shorter than 15 segs]";
+                            message += $" [{e.Message} - tip: Intentemos con un audio más corto]";
                         }
                     }
-
                     Trace.TraceError(e.ToString());
                 }
 
@@ -80,7 +80,7 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
             }
             else
             {
-                await this.HandleSystemMessage(activity);
+                await HandleSystemMessageService.GetInstance().HandleSystemMessage(activity);
             }
 
             var response = this.Request.CreateResponse(HttpStatusCode.OK);
@@ -89,21 +89,11 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
 
         private static string ProcessText(string text)
         {
-            string message = "You said : " + text + ".";
+            string message = "Voy a procesar el siguiente texto: " + text + ".";
 
             if (!string.IsNullOrEmpty(text))
             {
-                var wordCount = text.Split(' ').Count(x => !string.IsNullOrEmpty(x));
-                message += "\n\nWord Count: " + wordCount;
-
-                var characterCount = text.Count(c => c != ' ');
-                message += "\n\nCharacter Count: " + characterCount;
-
-                var spaceCount = text.Count(c => c == ' ');
-                message += "\n\nSpace Count: " + spaceCount;
-
-                var vowelCount = text.ToUpper().Count("AEIOU".Contains);
-                message += "\n\nVowel Count: " + vowelCount;
+                
             }
 
             return message;
@@ -142,45 +132,5 @@ namespace Microsoft.Bot.Sample.SimpleEchoBot
 
             return null;
         }
-
-        /// <summary>
-        /// Handles the system activity.
-        /// </summary>
-        /// <param name="activity">The activity.</param>
-        /// <returns>Activity</returns>
-        private async Task<Activity> HandleSystemMessage(Activity activity)
-        {
-            switch (activity.Type)
-            {
-                case ActivityTypes.DeleteUserData:
-                    // Implement user deletion here
-                    // If we handle user deletion, return a real message
-                    break;
-                case ActivityTypes.ConversationUpdate:
-                    // Greet the user the first time the bot is added to a conversation.
-                    if (activity.MembersAdded.Any(m => m.Id == activity.Recipient.Id))
-                    {
-                        var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-
-                        var response = activity.CreateReply();
-                        response.Text = "Hi! I am SpeechToText Bot. I can understand the content of any audio and convert it to text. Try sending me a wav file.";
-
-                        await connector.Conversations.ReplyToActivityAsync(response);
-                    }
-
-                    break;
-                case ActivityTypes.ContactRelationUpdate:
-                    // Handle add/remove from contact lists
-                    break;
-                case ActivityTypes.Typing:
-                    // Handle knowing that the user is typing
-                    break;
-                case ActivityTypes.Ping:
-                    break;
-            }
-
-            return null;
-        }
     }
-
 }
