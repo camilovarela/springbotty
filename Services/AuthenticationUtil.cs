@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleEchoBot.Services
+namespace SpringBotty.Services
 {
     using System;
     using System.Net.Http;

@@ -15,8 +15,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using Microsoft.Bot.Connector;
-using SimpleEchoBot.Constants;
-using SimpleEchoBot.Services;
+using SpringBotty.Constants;
+using SpringBotty.Services;
 
 /**
  * This class exposes a rest endpoint in order to communicate with the chatbot.
@@ -26,7 +26,7 @@ using SimpleEchoBot.Services;
  * SpringBotty uses CognitionServices from Azure in order to analyze the intent of
  * the message (LUIS) and a voice recognition (Speech service).
  **/
-namespace Microsoft.Bot.Sample.SimpleEchoBot
+namespace Microsoft.Bot.SpringBotty
 {
     [BotAuthentication]
     public class MessagesController : ApiController

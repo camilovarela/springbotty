@@ -6,7 +6,7 @@
  */
 using System;
 
-namespace SimpleEchoBot.Constants
+namespace SpringBotty.Constants
 {
     class SpringBottyConstants
     {
@@ -14,7 +14,7 @@ namespace SimpleEchoBot.Constants
 
         public static readonly String NOT_AUDIBLE_FILE = "Soy un bot auditivo. Intentemos con archivos de sonido .wav";
 
-        public static readonly String AUDIBLE_FILE_ERROR = "Tuve problemas analizando el sonido.Intenta de nuevo.";
+        public static readonly String AUDIBLE_FILE_ERROR = "Tuve problemas analizando el sonido. Intenta de nuevo.";
 
     }
 }

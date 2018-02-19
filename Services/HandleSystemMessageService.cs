@@ -5,12 +5,12 @@
  * All rights reserved Date: 19/02/2018
  */
 using Microsoft.Bot.Connector;
-using SimpleEchoBot.Constants;
+using SpringBotty.Constants;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SimpleEchoBot.Services
+namespace SpringBotty.Services
 {
     class HandleSystemMessageService
     {
